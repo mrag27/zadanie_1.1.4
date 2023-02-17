@@ -11,7 +11,7 @@ public class Util {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "egor070070";
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         Connection connection = null;
         try {
             Driver driver = new com.mysql.cj.jdbc.Driver();
@@ -21,7 +21,6 @@ public class Util {
             if (!connection.isClosed()) {
                 System.out.println("Соединение с БД установлено");
             }
-            connection.close();
         } catch (SQLException e) {
             System.out.println("Соединение с БД не установлено");
         }
