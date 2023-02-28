@@ -1,16 +1,16 @@
 package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.util.Util;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jm.task.core.jdbc.util.Util.getConnection;
 
 public class UserDaoJDBCImpl implements UserDao {
     public UserDaoJDBCImpl() {
     }
-    private Connection connection = getConnection();
+    private Connection connection = Util.getConnection();
 
     public void createUsersTable() {
         String sql = "CREATE TABLE IF NOT EXISTS User (id BIGINT(255) PRIMARY KEY AUTO_INCREMENT," +
@@ -47,7 +47,6 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void removeUserById(long id) {
         String sql = "DELETE FROM User WHERE id = id;";
-        User user = new User();
         try (Statement statement = connection.createStatement()) {
              statement.executeUpdate(sql);
         } catch (SQLException e) {
@@ -77,7 +76,6 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void cleanUsersTable() {
         String sql = "DELETE FROM User;";
-        User user = new User();
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
