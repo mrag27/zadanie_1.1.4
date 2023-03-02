@@ -31,6 +31,13 @@ public class UserDaoJDBCImpl implements UserDao {
             }
             e.printStackTrace();
         }
+        finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void dropUsersTable() {
@@ -46,6 +53,13 @@ public class UserDaoJDBCImpl implements UserDao {
                 throw new RuntimeException(ex);
             }
             e.printStackTrace();
+        }
+        finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -66,6 +80,13 @@ public class UserDaoJDBCImpl implements UserDao {
             }
             e.printStackTrace();
         }
+        finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void removeUserById(long id) {
@@ -82,13 +103,19 @@ public class UserDaoJDBCImpl implements UserDao {
             }
             e.printStackTrace();
         }
+        finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
         String sql = "SELECT id, name, lastName, age FROM User;";
         try (Statement statement = connection.createStatement()) {
-            connection.setAutoCommit(false);
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 User user = new User();
@@ -97,14 +124,8 @@ public class UserDaoJDBCImpl implements UserDao {
                 user.setLastName(resultSet.getString("lastname"));
                 user.setAge(resultSet.getByte("age"));
                 list.add(user);
-                connection.commit();
             }
         } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
             e.printStackTrace();
         }
         return list;
@@ -115,6 +136,7 @@ public class UserDaoJDBCImpl implements UserDao {
         try (Statement statement = connection.createStatement()) {
             connection.setAutoCommit(false);
             statement.executeUpdate(sql);
+            connection.commit();
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -122,6 +144,13 @@ public class UserDaoJDBCImpl implements UserDao {
                 throw new RuntimeException(ex);
             }
             e.printStackTrace();
+        }
+        finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
